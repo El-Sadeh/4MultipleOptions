@@ -88,6 +88,7 @@ void publisher_main(int domain_id, int sample_count)
 
 			//creating a nice long random float number for the lat
 			randNum = std::rand();
+			// GS more elegant to generate rand float number - https://stackoverflow.com/questions/686353/random-float-number-generation
 			rndFltNum = (static_cast <float>(randNum * 1491) / 1000000);
 			sample.radarInfo().searchInfo().lat(rndFltNum);
 
@@ -104,7 +105,9 @@ void publisher_main(int domain_id, int sample_count)
 			sample.radarInfo().trackInfo().trackID(std::rand());
 
 			//generating a random priority
+			// GS - the priority is always low (it should be random).
 			randNum = (std::rand() % 3);
+			//The temp creation is redundunt, you can assign values directly to the sample.
 			Priority temp;
 			switch (randNum)
 			{
@@ -121,7 +124,9 @@ void publisher_main(int domain_id, int sample_count)
 
 			// the next line didnt work!!!!
 			//Priority temp = static_cast<Priority> (randNum); //creating a random priority
-			sample.radarInfo().trackInfo().priority(temp);
+			//GS - this how you do it:
+				//sample.radarInfo().trackInfo().priority(Priority::inner_enum(1));
+;			sample.radarInfo().trackInfo().priority(temp);
 		}
 		std::cout << "Writing RadarCommand, count " << count << std::endl;
 		writer.write(sample);
