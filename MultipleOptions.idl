@@ -1,0 +1,33 @@
+enum Options {SEARCH,TRACK};
+enum Priority {low, medium, high};
+struct TypeSearch{
+	float lat;
+	float longt;	
+	short alt;
+};
+	
+struct TypeTrack{
+	long trackID;
+	Priority priority;
+};
+
+union radarUnion
+	switch (Options){ 
+		case SEARCH: 
+			TypeSearch searchInfo; 
+		case TRACK:
+			TypeTrack trackInfo;
+};
+
+struct TimeStampStruct{
+	short day;
+	short month;
+	short year;
+};
+
+struct RadarCommand{
+	TimeStampStruct timeStamp;
+	long sequenceNumber;
+	radarUnion radarInfo;
+};
+
