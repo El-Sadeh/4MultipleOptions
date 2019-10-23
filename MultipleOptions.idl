@@ -1,11 +1,15 @@
 enum Options {SEARCH,TRACK};
+//GS - you need to be consistent with code style. Enum should be UPPER case.
 enum Priority {low, medium, high};
+
+//GS - be consistent with type names and make them readable. long(t) doesn't make sense. Change it to lon or longitude.
 struct TypeSearch{
 	float lat;
 	float longt;	
 	short alt;
 };
-	
+
+//Change from TypeTrack to TrackType (also for Search).
 struct TypeTrack{
 	long trackID;
 	Priority priority;
@@ -19,6 +23,7 @@ union radarUnion
 			TypeTrack trackInfo;
 };
 
+//GS - You need a millisecond level resolution timestamp
 struct TimeStampStruct{
 	short day;
 	short month;
@@ -30,4 +35,6 @@ struct RadarCommand{
 	long sequenceNumber;
 	radarUnion radarInfo;
 };
+
+//GS - I'll send you IDL coding styles reference.
 

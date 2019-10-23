@@ -72,6 +72,7 @@ public:
 				std::cout << "Received message " << sample_it->data().sequenceNumber() << " from ";
 				std::cout << sample_it->data().timeStamp().day() << "/" << sample_it->data().timeStamp().month();
 				std::cout << "/" << sample_it->data().timeStamp().year() << " kind ";
+				//GS - I want you to print only the command values. Not the descrimnator again". i.e - in case search, print only lat,long, alt
 				std::cout << sample_it->data().radarInfo()._d() << ". Command values are ";
 				std::cout << sample_it->data().radarInfo() << std::endl;
 				//	std::cout << sample_it->data() << std::endl;
