@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef MultipleOptions_1810373351_hpp
-#define MultipleOptions_1810373351_hpp
+#ifndef MultipleOptions_1810373413_hpp
+#define MultipleOptions_1810373413_hpp
 
 #include <iosfwd>
 
@@ -21,8 +21,6 @@ or consult the RTI Connext manual.
 #define RTIUSERDllExport __declspec(dllexport)
 #endif
 
-#include <cstdlib>
-#include <ctime>
 #include "dds/domain/DomainParticipant.hpp"
 #include "dds/topic/TopicTraits.hpp"
 #include "dds/core/SafeEnumeration.hpp"
@@ -69,35 +67,35 @@ typedef dds::core::safe_enum<Options_def> Options;
 NDDSUSERDllExport std::ostream& operator << (std::ostream& o,const Options& sample);
 struct Priority_def {
     enum type {
-        low,      
-        medium,      
-        high     
+        LOW,      
+        MEDUIM,      
+        HIGH     
     };
-    static type get_default(){ return low;}
+    static type get_default(){ return LOW;}
 };
 
 typedef dds::core::safe_enum<Priority_def> Priority;
 NDDSUSERDllExport std::ostream& operator << (std::ostream& o,const Priority& sample);
 
-class NDDSUSERDllExport TypeSearch {
+class NDDSUSERDllExport SearchType {
 
   public:
-    TypeSearch();
+    SearchType();
 
-    TypeSearch(
+    SearchType(
         float lat,
-        float longt,
+        float lon,
         int16_t alt);
 
     #ifdef RTI_CXX11_RVALUE_REFERENCES
     #ifndef RTI_CXX11_NO_IMPLICIT_MOVE_OPERATIONS
-    TypeSearch (TypeSearch&&) = default;
-    TypeSearch& operator=(TypeSearch&&) = default;
-    TypeSearch& operator=(const TypeSearch&) = default;
-    TypeSearch(const TypeSearch&) = default;
+    SearchType (SearchType&&) = default;
+    SearchType& operator=(SearchType&&) = default;
+    SearchType& operator=(const SearchType&) = default;
+    SearchType(const SearchType&) = default;
     #else
-    TypeSearch(TypeSearch&& other_) OMG_NOEXCEPT;  
-    TypeSearch& operator=(TypeSearch&&  other_) OMG_NOEXCEPT;
+    SearchType(SearchType&& other_) OMG_NOEXCEPT;  
+    SearchType& operator=(SearchType&&  other_) OMG_NOEXCEPT;
     #endif
     #endif 
 
@@ -105,53 +103,52 @@ class NDDSUSERDllExport TypeSearch {
     const float& lat() const OMG_NOEXCEPT;
     void lat(float value);
 
-    float& longt() OMG_NOEXCEPT; 
-    const float& longt() const OMG_NOEXCEPT;
-    void longt(float value);
+    float& lon() OMG_NOEXCEPT; 
+    const float& lon() const OMG_NOEXCEPT;
+    void lon(float value);
 
     int16_t& alt() OMG_NOEXCEPT; 
     const int16_t& alt() const OMG_NOEXCEPT;
     void alt(int16_t value);
 
-    bool operator == (const TypeSearch& other_) const;
-    bool operator != (const TypeSearch& other_) const;
+    bool operator == (const SearchType& other_) const;
+    bool operator != (const SearchType& other_) const;
 
-    void swap(TypeSearch& other_) OMG_NOEXCEPT ;
+    void swap(SearchType& other_) OMG_NOEXCEPT ;
 
   private:
 
     float m_lat_;
-    float m_longt_;
+    float m_lon_;
     int16_t m_alt_;
 
 };
 
-
-inline void swap(TypeSearch& a, TypeSearch& b)  OMG_NOEXCEPT 
+inline void swap(SearchType& a, SearchType& b)  OMG_NOEXCEPT 
 {
     a.swap(b);
 }
 
-NDDSUSERDllExport std::ostream& operator<<(std::ostream& o, const TypeSearch& sample);
+NDDSUSERDllExport std::ostream& operator<<(std::ostream& o, const SearchType& sample);
 
-class NDDSUSERDllExport TypeTrack {
+class NDDSUSERDllExport TrackType {
 
   public:
-    TypeTrack();
+    TrackType();
 
-    TypeTrack(
+    TrackType(
         int32_t trackID,
         const Priority& priority);
 
     #ifdef RTI_CXX11_RVALUE_REFERENCES
     #ifndef RTI_CXX11_NO_IMPLICIT_MOVE_OPERATIONS
-    TypeTrack (TypeTrack&&) = default;
-    TypeTrack& operator=(TypeTrack&&) = default;
-    TypeTrack& operator=(const TypeTrack&) = default;
-    TypeTrack(const TypeTrack&) = default;
+    TrackType (TrackType&&) = default;
+    TrackType& operator=(TrackType&&) = default;
+    TrackType& operator=(const TrackType&) = default;
+    TrackType(const TrackType&) = default;
     #else
-    TypeTrack(TypeTrack&& other_) OMG_NOEXCEPT;  
-    TypeTrack& operator=(TypeTrack&&  other_) OMG_NOEXCEPT;
+    TrackType(TrackType&& other_) OMG_NOEXCEPT;  
+    TrackType& operator=(TrackType&&  other_) OMG_NOEXCEPT;
     #endif
     #endif 
 
@@ -163,10 +160,10 @@ class NDDSUSERDllExport TypeTrack {
     const Priority& priority() const OMG_NOEXCEPT;
     void priority(const Priority& value);
 
-    bool operator == (const TypeTrack& other_) const;
-    bool operator != (const TypeTrack& other_) const;
+    bool operator == (const TrackType& other_) const;
+    bool operator != (const TrackType& other_) const;
 
-    void swap(TypeTrack& other_) OMG_NOEXCEPT ;
+    void swap(TrackType& other_) OMG_NOEXCEPT ;
 
   private:
 
@@ -175,12 +172,12 @@ class NDDSUSERDllExport TypeTrack {
 
 };
 
-inline void swap(TypeTrack& a, TypeTrack& b)  OMG_NOEXCEPT 
+inline void swap(TrackType& a, TrackType& b)  OMG_NOEXCEPT 
 {
     a.swap(b);
 }
 
-NDDSUSERDllExport std::ostream& operator<<(std::ostream& o, const TypeTrack& sample);
+NDDSUSERDllExport std::ostream& operator<<(std::ostream& o, const TrackType& sample);
 
 class NDDSUSERDllExport radarUnion {
 
@@ -203,13 +200,13 @@ class NDDSUSERDllExport radarUnion {
     const Options& _d() const ;
     void _d(const Options& value);
 
-    TypeSearch& searchInfo() ; 
-    const TypeSearch& searchInfo() const ;
-    void searchInfo(const TypeSearch& value);
+    SearchType& searchInfo() ; 
+    const SearchType& searchInfo() const ;
+    void searchInfo(const SearchType& value);
 
-    TypeTrack& trackInfo() ; 
-    const TypeTrack& trackInfo() const ;
-    void trackInfo(const TypeTrack& value);
+    TrackType& trackInfo() ; 
+    const TrackType& trackInfo() const ;
+    void trackInfo(const TrackType& value);
 
     bool operator == (const radarUnion& other_) const;
     bool operator != (const radarUnion& other_) const;
@@ -222,12 +219,12 @@ class NDDSUSERDllExport radarUnion {
 
     Options m_d_;
     struct NDDSUSERDllExport Union_ {
-        TypeSearch m_searchInfo_;
-        TypeTrack m_trackInfo_;
+        SearchType m_searchInfo_;
+        TrackType m_trackInfo_;
         Union_();
         Union_(
-            const TypeSearch& searchInfo,
-            const TypeTrack& trackInfo);
+            const SearchType& searchInfo,
+            const TrackType& trackInfo);
     };
     Union_ m_u_;
 
@@ -246,6 +243,10 @@ class NDDSUSERDllExport TimeStampStruct {
     TimeStampStruct();
 
     TimeStampStruct(
+        int16_t milisec,
+        int16_t sec,
+        int16_t minutes,
+        int16_t hour,
         int16_t day,
         int16_t month,
         int16_t year);
@@ -256,11 +257,29 @@ class NDDSUSERDllExport TimeStampStruct {
     TimeStampStruct& operator=(TimeStampStruct&&) = default;
     TimeStampStruct& operator=(const TimeStampStruct&) = default;
     TimeStampStruct(const TimeStampStruct&) = default;
+	
+	
     #else
     TimeStampStruct(TimeStampStruct&& other_) OMG_NOEXCEPT;  
     TimeStampStruct& operator=(TimeStampStruct&&  other_) OMG_NOEXCEPT;
     #endif
     #endif 
+
+    int16_t& milisec() OMG_NOEXCEPT; 
+    const int16_t& milisec() const OMG_NOEXCEPT;
+    void milisec(int16_t value);
+
+    int16_t& sec() OMG_NOEXCEPT; 
+    const int16_t& sec() const OMG_NOEXCEPT;
+    void sec(int16_t value);
+
+    int16_t& minutes() OMG_NOEXCEPT; 
+    const int16_t& minutes() const OMG_NOEXCEPT;
+    void minutes(int16_t value);
+
+    int16_t& hour() OMG_NOEXCEPT; 
+    const int16_t& hour() const OMG_NOEXCEPT;
+    void hour(int16_t value);
 
     int16_t& day() OMG_NOEXCEPT; 
     const int16_t& day() const OMG_NOEXCEPT;
@@ -279,8 +298,14 @@ class NDDSUSERDllExport TimeStampStruct {
 
     void swap(TimeStampStruct& other_) OMG_NOEXCEPT ;
 
+	TimeStampStruct GenerateTimeStamp();
+
   private:
 
+    int16_t m_milisec_;
+    int16_t m_sec_;
+    int16_t m_minutes_;
+    int16_t m_hour_;
     int16_t m_day_;
     int16_t m_month_;
     int16_t m_year_;
@@ -316,7 +341,7 @@ class NDDSUSERDllExport RadarCommand {
     #endif
     #endif 
 
-    TimeStampStruct& timeStamp() OMG_NOEXCEPT; 
+	TimeStampStruct& timeStamp() OMG_NOEXCEPT;
     const TimeStampStruct& timeStamp() const OMG_NOEXCEPT;
     void timeStamp(const TimeStampStruct& value);
 
@@ -352,17 +377,17 @@ namespace dds {
     namespace topic {
 
         template<>
-        struct topic_type_name<TypeSearch> {
+        struct topic_type_name<SearchType> {
             NDDSUSERDllExport static std::string value() {
-                return "TypeSearch";
+                return "SearchType";
             }
         };
 
         template<>
-        struct is_topic_type<TypeSearch> : public dds::core::true_type {};
+        struct is_topic_type<SearchType> : public dds::core::true_type {};
 
         template<>
-        struct topic_type_support<TypeSearch> {
+        struct topic_type_support<SearchType> {
             NDDSUSERDllExport 
             static void register_type(
                 dds::domain::DomainParticipant& participant,
@@ -370,33 +395,33 @@ namespace dds {
 
             NDDSUSERDllExport 
             static std::vector<char>& to_cdr_buffer(
-                std::vector<char>& buffer, const TypeSearch& sample);
+                std::vector<char>& buffer, const SearchType& sample);
 
             NDDSUSERDllExport 
-            static void from_cdr_buffer(TypeSearch& sample, const std::vector<char>& buffer);
+            static void from_cdr_buffer(SearchType& sample, const std::vector<char>& buffer);
 
             NDDSUSERDllExport 
-            static void reset_sample(TypeSearch& sample);
+            static void reset_sample(SearchType& sample);
 
             NDDSUSERDllExport 
-            static void allocate_sample(TypeSearch& sample, int, int);
+            static void allocate_sample(SearchType& sample, int, int);
 
             static const rti::topic::TypePluginKind::type type_plugin_kind = 
             rti::topic::TypePluginKind::STL;
         };
 
         template<>
-        struct topic_type_name<TypeTrack> {
+        struct topic_type_name<TrackType> {
             NDDSUSERDllExport static std::string value() {
-                return "TypeTrack";
+                return "TrackType";
             }
         };
 
         template<>
-        struct is_topic_type<TypeTrack> : public dds::core::true_type {};
+        struct is_topic_type<TrackType> : public dds::core::true_type {};
 
         template<>
-        struct topic_type_support<TypeTrack> {
+        struct topic_type_support<TrackType> {
             NDDSUSERDllExport 
             static void register_type(
                 dds::domain::DomainParticipant& participant,
@@ -404,16 +429,16 @@ namespace dds {
 
             NDDSUSERDllExport 
             static std::vector<char>& to_cdr_buffer(
-                std::vector<char>& buffer, const TypeTrack& sample);
+                std::vector<char>& buffer, const TrackType& sample);
 
             NDDSUSERDllExport 
-            static void from_cdr_buffer(TypeTrack& sample, const std::vector<char>& buffer);
+            static void from_cdr_buffer(TrackType& sample, const std::vector<char>& buffer);
 
             NDDSUSERDllExport 
-            static void reset_sample(TypeTrack& sample);
+            static void reset_sample(TrackType& sample);
 
             NDDSUSERDllExport 
-            static void allocate_sample(TypeTrack& sample, int, int);
+            static void allocate_sample(TrackType& sample, int, int);
 
             static const rti::topic::TypePluginKind::type type_plugin_kind = 
             rti::topic::TypePluginKind::STL;
@@ -551,25 +576,25 @@ namespace rti {
         };
 
         template<>
-        struct dynamic_type<TypeSearch> {
+        struct dynamic_type<SearchType> {
             typedef dds::core::xtypes::StructType type;
             NDDSUSERDllExport static const dds::core::xtypes::StructType& get();
         };
 
         template <>
-        struct extensibility<TypeSearch> {
+        struct extensibility<SearchType> {
             static const dds::core::xtypes::ExtensibilityKind::type kind =
             dds::core::xtypes::ExtensibilityKind::EXTENSIBLE;                
         };
 
         template<>
-        struct dynamic_type<TypeTrack> {
+        struct dynamic_type<TrackType> {
             typedef dds::core::xtypes::StructType type;
             NDDSUSERDllExport static const dds::core::xtypes::StructType& get();
         };
 
         template <>
-        struct extensibility<TypeTrack> {
+        struct extensibility<TrackType> {
             static const dds::core::xtypes::ExtensibilityKind::type kind =
             dds::core::xtypes::ExtensibilityKind::EXTENSIBLE;                
         };
@@ -620,5 +645,5 @@ namespace rti {
 #define NDDSUSERDllExport
 #endif
 
-#endif // MultipleOptions_1810373351_hpp
+#endif // MultipleOptions_1810373413_hpp
 

@@ -469,7 +469,7 @@ PriorityPlugin_serialize(
 
         if(serialize_sample) {
 
-            if (*sample != Priority::low && *sample != Priority::medium && *sample != Priority::high){
+            if (*sample != Priority::LOW && *sample != Priority::MEDUIM && *sample != Priority::HIGH){
                 RTICdrLog_exception(
                     METHOD_NAME, 
                     &RTI_CDR_LOG_SERIALIZE_INVALID_ENUMERATOR_ds, 
@@ -526,14 +526,14 @@ PriorityPlugin_deserialize_sample(
             return RTI_FALSE;
         }
         switch (enum_tmp) {
-            case Priority::low:
-            *sample=Priority::low;
+            case Priority::LOW:
+            *sample=Priority::LOW;
             break;
-            case Priority::medium:
-            *sample=Priority::medium;
+            case Priority::MEDUIM:
+            *sample=Priority::MEDUIM;
             break;
-            case Priority::high:
-            *sample=Priority::high;
+            case Priority::HIGH:
+            *sample=Priority::HIGH;
             break;
             default:
             {
@@ -820,18 +820,18 @@ void PriorityPluginSupport_print_data(
 * ------------------------------------------------------------------------ */
 
 /* ----------------------------------------------------------------------------
-*  Type TypeSearch
+*  Type SearchType
 * -------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
 Support functions:
 * -------------------------------------------------------------------------- */
 
-TypeSearch *
-TypeSearchPluginSupport_create_data(void)
+SearchType *
+SearchTypePluginSupport_create_data(void)
 {
     try {
-        TypeSearch *sample = new TypeSearch;    
+        SearchType *sample = new SearchType;    
         rti::topic::allocate_sample(*sample);
         return sample;
     } catch (...) {
@@ -840,16 +840,16 @@ TypeSearchPluginSupport_create_data(void)
 }
 
 void 
-TypeSearchPluginSupport_destroy_data(
-    TypeSearch *sample) 
+SearchTypePluginSupport_destroy_data(
+    SearchType *sample) 
 {
     delete sample;
 }
 
 RTIBool 
-TypeSearchPluginSupport_copy_data(
-    TypeSearch *dst,
-    const TypeSearch *src)
+SearchTypePluginSupport_copy_data(
+    SearchType *dst,
+    const SearchType *src)
 {
     try {
         *dst = *src;
@@ -865,7 +865,7 @@ Callback functions:
 * ---------------------------------------------------------------------------- */
 
 PRESTypePluginParticipantData 
-TypeSearchPlugin_on_participant_attached(
+SearchTypePlugin_on_participant_attached(
     void *registration_data,
     const struct PRESTypePluginParticipantInfo *participant_info,
     RTIBool top_level_registration,
@@ -883,7 +883,7 @@ TypeSearchPlugin_on_participant_attached(
 }
 
 void 
-TypeSearchPlugin_on_participant_detached(
+SearchTypePlugin_on_participant_detached(
     PRESTypePluginParticipantData participant_data)
 {
 
@@ -891,7 +891,7 @@ TypeSearchPlugin_on_participant_detached(
 }
 
 PRESTypePluginEndpointData
-TypeSearchPlugin_on_endpoint_attached(
+SearchTypePlugin_on_endpoint_attached(
     PRESTypePluginParticipantData participant_data,
     const struct PRESTypePluginEndpointInfo *endpoint_info,
     RTIBool top_level_registration, 
@@ -909,9 +909,9 @@ TypeSearchPlugin_on_endpoint_attached(
             participant_data,
             endpoint_info,
             (PRESTypePluginDefaultEndpointDataCreateSampleFunction)
-            TypeSearchPluginSupport_create_data,
+            SearchTypePluginSupport_create_data,
             (PRESTypePluginDefaultEndpointDataDestroySampleFunction)
-            TypeSearchPluginSupport_destroy_data,
+            SearchTypePluginSupport_destroy_data,
             NULL , NULL );
 
         if (epd == NULL) {
@@ -919,7 +919,7 @@ TypeSearchPlugin_on_endpoint_attached(
         } 
 
         if (endpoint_info->endpointKind == PRES_TYPEPLUGIN_ENDPOINT_WRITER) {
-            serializedSampleMaxSize = TypeSearchPlugin_get_serialized_sample_max_size(
+            serializedSampleMaxSize = SearchTypePlugin_get_serialized_sample_max_size(
                 epd,RTI_FALSE,RTI_CDR_ENCAPSULATION_ID_CDR_BE,0);
 
             PRESTypePluginDefaultEndpointData_setMaxSizeSerializedSample(epd, serializedSampleMaxSize);
@@ -928,9 +928,9 @@ TypeSearchPlugin_on_endpoint_attached(
                 epd,
                 endpoint_info,
                 (PRESTypePluginGetSerializedSampleMaxSizeFunction)
-                TypeSearchPlugin_get_serialized_sample_max_size, epd,
+                SearchTypePlugin_get_serialized_sample_max_size, epd,
                 (PRESTypePluginGetSerializedSampleSizeFunction)
-                TypeSearchPlugin_get_serialized_sample_size,
+                SearchTypePlugin_get_serialized_sample_size,
                 epd) == RTI_FALSE) {
                 PRESTypePluginDefaultEndpointData_delete(epd);
                 return NULL;
@@ -944,7 +944,7 @@ TypeSearchPlugin_on_endpoint_attached(
 }
 
 void 
-TypeSearchPlugin_on_endpoint_detached(
+SearchTypePlugin_on_endpoint_detached(
     PRESTypePluginEndpointData endpoint_data)
 {  
 
@@ -952,16 +952,16 @@ TypeSearchPlugin_on_endpoint_detached(
 }
 
 void    
-TypeSearchPlugin_return_sample(
+SearchTypePlugin_return_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample,
+    SearchType *sample,
     void *handle)
 {
     try {
         rti::topic::reset_sample(*sample);
     } catch(const std::exception& ex) {
         RTICdrLog_exception(
-            "TypeSearchPlugin_return_sample",
+            "SearchTypePlugin_return_sample",
             &RTI_LOG_ANY_FAILURE_s,
             "exception: ",
             ex.what());           
@@ -972,28 +972,28 @@ TypeSearchPlugin_return_sample(
 }
 
 RTIBool 
-TypeSearchPlugin_copy_sample(
+SearchTypePlugin_copy_sample(
     PRESTypePluginEndpointData,
-    TypeSearch *dst,
-    const TypeSearch *src)
+    SearchType *dst,
+    const SearchType *src)
 {
-    return TypeSearchPluginSupport_copy_data(dst,src);
+    return SearchTypePluginSupport_copy_data(dst,src);
 }
 
 /* ----------------------------------------------------------------------------
 (De)Serialize functions:
 * ------------------------------------------------------------------------- */
 unsigned int 
-TypeSearchPlugin_get_serialized_sample_max_size(
+SearchTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 RTIBool 
-TypeSearchPlugin_serialize(
+SearchTypePlugin_serialize(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeSearch *sample, 
+    const SearchType *sample, 
     struct RTICdrStream *stream,    
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -1023,7 +1023,7 @@ TypeSearchPlugin_serialize(
             }
 
             if (!rti::topic::cdr::serialize(
-                stream, &sample->longt())) {
+                stream, &sample->lon())) {
                 return RTI_FALSE;
             }
 
@@ -1046,9 +1046,9 @@ TypeSearchPlugin_serialize(
 }
 
 RTIBool 
-TypeSearchPlugin_deserialize_sample(
+SearchTypePlugin_deserialize_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample,
+    SearchType *sample,
     struct RTICdrStream *stream,   
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_sample, 
@@ -1077,7 +1077,7 @@ TypeSearchPlugin_deserialize_sample(
         }
         if (!rti::topic::cdr::deserialize(
             stream, 
-            &sample->longt())) {
+            &sample->lon())) {
             goto fin; 
         }
         if (!rti::topic::cdr::deserialize(
@@ -1102,10 +1102,10 @@ TypeSearchPlugin_deserialize_sample(
 }
 
 RTIBool
-TypeSearchPlugin_serialize_to_cdr_buffer(
+SearchTypePlugin_serialize_to_cdr_buffer(
     char * buffer,
     unsigned int * length,
-    const TypeSearch *sample)
+    const SearchType *sample)
 {
     try{
         struct RTICdrStream stream;
@@ -1117,12 +1117,12 @@ TypeSearchPlugin_serialize_to_cdr_buffer(
         }
 
         epd._maxSizeSerializedSample =
-        TypeSearchPlugin_get_serialized_sample_max_size(
+        SearchTypePlugin_get_serialized_sample_max_size(
             NULL, RTI_TRUE, RTICdrEncapsulation_getNativeCdrEncapsulationId(), 0);
 
         if (buffer == NULL) {
             *length = 
-            TypeSearchPlugin_get_serialized_sample_size(
+            SearchTypePlugin_get_serialized_sample_size(
                 (PRESTypePluginEndpointData)&epd,
                 RTI_TRUE,
                 RTICdrEncapsulation_getNativeCdrEncapsulationId(),
@@ -1139,7 +1139,7 @@ TypeSearchPlugin_serialize_to_cdr_buffer(
         RTICdrStream_init(&stream);
         RTICdrStream_set(&stream, (char *)buffer, *length);
 
-        result = TypeSearchPlugin_serialize(
+        result = SearchTypePlugin_serialize(
             (PRESTypePluginEndpointData)&epd, sample, &stream, 
             RTI_TRUE, RTICdrEncapsulation_getNativeCdrEncapsulationId(), 
             RTI_TRUE, NULL);  
@@ -1152,8 +1152,8 @@ TypeSearchPlugin_serialize_to_cdr_buffer(
 }
 
 RTIBool
-TypeSearchPlugin_deserialize_from_cdr_buffer(
-    TypeSearch *sample,
+SearchTypePlugin_deserialize_from_cdr_buffer(
+    SearchType *sample,
     const char * buffer,
     unsigned int length)
 {
@@ -1163,16 +1163,16 @@ TypeSearchPlugin_deserialize_from_cdr_buffer(
     RTICdrStream_set(&stream, (char *)buffer, length);
 
     rti::topic::reset_sample(*sample);
-    return TypeSearchPlugin_deserialize_sample( 
+    return SearchTypePlugin_deserialize_sample( 
         NULL, sample,
         &stream, RTI_TRUE, RTI_TRUE, 
         NULL);
 }
 
 RTIBool 
-TypeSearchPlugin_deserialize(
+SearchTypePlugin_deserialize(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch **sample,
+    SearchType **sample,
     RTIBool * drop_sample,
     struct RTICdrStream *stream,   
     RTIBool deserialize_encapsulation,
@@ -1181,11 +1181,11 @@ TypeSearchPlugin_deserialize(
 {
     try {
         RTIBool result;
-        const char *METHOD_NAME = "TypeSearchPlugin_deserialize";
+        const char *METHOD_NAME = "SearchTypePlugin_deserialize";
         if (drop_sample) {} /* To avoid warnings */
 
         stream->_xTypesState.unassignable = RTI_FALSE;
-        result= TypeSearchPlugin_deserialize_sample( 
+        result= SearchTypePlugin_deserialize_sample( 
             endpoint_data, (sample != NULL)?*sample:NULL,
             stream, deserialize_encapsulation, deserialize_sample, 
             endpoint_plugin_qos);
@@ -1199,7 +1199,7 @@ TypeSearchPlugin_deserialize(
             RTICdrLog_exception(
                 METHOD_NAME, 
                 &RTI_CDR_LOG_UNASSIGNABLE_SAMPLE_OF_TYPE_s, 
-                "TypeSearch");
+                "SearchType");
 
         }
 
@@ -1210,7 +1210,7 @@ TypeSearchPlugin_deserialize(
     }
 }
 
-RTIBool TypeSearchPlugin_skip(
+RTIBool SearchTypePlugin_skip(
     PRESTypePluginEndpointData endpoint_data,
     struct RTICdrStream *stream,   
     RTIBool skip_encapsulation,
@@ -1264,7 +1264,7 @@ catch (...) {
 }
 
 unsigned int 
-TypeSearchPlugin_get_serialized_sample_max_size_ex(
+SearchTypePlugin_get_serialized_sample_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -1306,7 +1306,7 @@ TypeSearchPlugin_get_serialized_sample_max_size_ex(
 }
 
 unsigned int 
-TypeSearchPlugin_get_serialized_sample_max_size(
+SearchTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -1316,7 +1316,7 @@ TypeSearchPlugin_get_serialized_sample_max_size(
         unsigned int size;
         RTIBool overflow = RTI_FALSE;
 
-        size = TypeSearchPlugin_get_serialized_sample_max_size_ex(
+        size = SearchTypePlugin_get_serialized_sample_max_size_ex(
             endpoint_data,&overflow,include_encapsulation,encapsulation_id,current_alignment);
 
         if (overflow) {
@@ -1330,7 +1330,7 @@ TypeSearchPlugin_get_serialized_sample_max_size(
 }
 
 unsigned int 
-TypeSearchPlugin_get_serialized_sample_min_size(
+SearchTypePlugin_get_serialized_sample_min_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -1378,12 +1378,12 @@ TypeSearchPlugin_get_serialized_sample_min_size(
 * encapsulation flags.
 */
 unsigned int
-TypeSearchPlugin_get_serialized_sample_size(
+SearchTypePlugin_get_serialized_sample_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment,
-    const TypeSearch * sample) 
+    const SearchType * sample) 
 {
     try {  
         unsigned int initial_alignment = current_alignment;
@@ -1441,15 +1441,15 @@ Key Management functions:
 * -------------------------------------------------------------------------------------- */
 
 PRESTypePluginKeyKind 
-TypeSearchPlugin_get_key_kind(void)
+SearchTypePlugin_get_key_kind(void)
 {
     return PRES_TYPEPLUGIN_NO_KEY;
 }
 
 RTIBool 
-TypeSearchPlugin_serialize_key(
+SearchTypePlugin_serialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeSearch *sample, 
+    const SearchType *sample, 
     struct RTICdrStream *stream,    
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -1469,7 +1469,7 @@ TypeSearchPlugin_serialize_key(
 
         if(serialize_key) {
 
-            if (!TypeSearchPlugin_serialize(
+            if (!SearchTypePlugin_serialize(
                 endpoint_data,
                 sample,
                 stream,
@@ -1491,9 +1491,9 @@ TypeSearchPlugin_serialize_key(
     }
 }
 
-RTIBool TypeSearchPlugin_deserialize_key_sample(
+RTIBool SearchTypePlugin_deserialize_key_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample, 
+    SearchType *sample, 
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_key,
@@ -1515,7 +1515,7 @@ RTIBool TypeSearchPlugin_deserialize_key_sample(
         }
         if (deserialize_key) {
 
-            if (!TypeSearchPlugin_deserialize_sample(
+            if (!SearchTypePlugin_deserialize_sample(
                 endpoint_data, sample, stream, 
                 RTI_FALSE, RTI_TRUE, 
                 endpoint_plugin_qos)) {
@@ -1533,9 +1533,9 @@ RTIBool TypeSearchPlugin_deserialize_key_sample(
     }
 }
 
-RTIBool TypeSearchPlugin_deserialize_key(
+RTIBool SearchTypePlugin_deserialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch **sample, 
+    SearchType **sample, 
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -1546,7 +1546,7 @@ RTIBool TypeSearchPlugin_deserialize_key(
         RTIBool result;
         if (drop_sample) {} /* To avoid warnings */
         stream->_xTypesState.unassignable = RTI_FALSE;
-        result= TypeSearchPlugin_deserialize_key_sample(
+        result= SearchTypePlugin_deserialize_key_sample(
             endpoint_data, (sample != NULL)?*sample:NULL, stream,
             deserialize_encapsulation, deserialize_key, endpoint_plugin_qos);
         if (result) {
@@ -1562,7 +1562,7 @@ RTIBool TypeSearchPlugin_deserialize_key(
 }
 
 unsigned int
-TypeSearchPlugin_get_serialized_key_max_size_ex(
+SearchTypePlugin_get_serialized_key_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -1588,7 +1588,7 @@ TypeSearchPlugin_get_serialized_key_max_size_ex(
         initial_alignment = 0;
     }
 
-    current_alignment += TypeSearchPlugin_get_serialized_sample_max_size_ex(
+    current_alignment += SearchTypePlugin_get_serialized_sample_max_size_ex(
         endpoint_data, overflow,RTI_FALSE, encapsulation_id, current_alignment);
 
     if (include_encapsulation) {
@@ -1598,7 +1598,7 @@ TypeSearchPlugin_get_serialized_key_max_size_ex(
 }
 
 unsigned int
-TypeSearchPlugin_get_serialized_key_max_size(
+SearchTypePlugin_get_serialized_key_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -1608,7 +1608,7 @@ TypeSearchPlugin_get_serialized_key_max_size(
         unsigned int size;
         RTIBool overflow = RTI_FALSE;
 
-        size = TypeSearchPlugin_get_serialized_key_max_size_ex(
+        size = SearchTypePlugin_get_serialized_key_max_size_ex(
             endpoint_data,&overflow,include_encapsulation,encapsulation_id,current_alignment);
 
         if (overflow) {
@@ -1622,9 +1622,9 @@ TypeSearchPlugin_get_serialized_key_max_size(
 }
 
 RTIBool 
-TypeSearchPlugin_serialized_sample_to_key(
+SearchTypePlugin_serialized_sample_to_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample,
+    SearchType *sample,
     struct RTICdrStream *stream, 
     RTIBool deserialize_encapsulation,  
     RTIBool deserialize_key, 
@@ -1649,7 +1649,7 @@ TypeSearchPlugin_serialized_sample_to_key(
 
     if (deserialize_key) {
 
-        if (!TypeSearchPlugin_deserialize_sample(
+        if (!SearchTypePlugin_deserialize_sample(
             endpoint_data, sample, stream, RTI_FALSE, 
             RTI_TRUE, endpoint_plugin_qos)) {
             return RTI_FALSE;
@@ -1681,7 +1681,7 @@ TypeSearchPlugin_serialized_sample_to_key(
 /* ------------------------------------------------------------------------
 * Plug-in Installation Methods
 * ------------------------------------------------------------------------ */
-struct PRESTypePlugin *TypeSearchPlugin_new(void) 
+struct PRESTypePlugin *SearchTypePlugin_new(void) 
 { 
     struct PRESTypePlugin *plugin = NULL;
     const struct PRESTypePluginVersion PLUGIN_VERSION = 
@@ -1698,50 +1698,50 @@ struct PRESTypePlugin *TypeSearchPlugin_new(void)
     /* set up parent's function pointers */
     plugin->onParticipantAttached =
     (PRESTypePluginOnParticipantAttachedCallback)
-    TypeSearchPlugin_on_participant_attached;
+    SearchTypePlugin_on_participant_attached;
     plugin->onParticipantDetached =
     (PRESTypePluginOnParticipantDetachedCallback)
-    TypeSearchPlugin_on_participant_detached;
+    SearchTypePlugin_on_participant_detached;
     plugin->onEndpointAttached =
     (PRESTypePluginOnEndpointAttachedCallback)
-    TypeSearchPlugin_on_endpoint_attached;
+    SearchTypePlugin_on_endpoint_attached;
     plugin->onEndpointDetached =
     (PRESTypePluginOnEndpointDetachedCallback)
-    TypeSearchPlugin_on_endpoint_detached;
+    SearchTypePlugin_on_endpoint_detached;
 
     plugin->copySampleFnc =
     (PRESTypePluginCopySampleFunction)
-    TypeSearchPlugin_copy_sample;
+    SearchTypePlugin_copy_sample;
     plugin->createSampleFnc =
     (PRESTypePluginCreateSampleFunction)
-    TypeSearchPlugin_create_sample;
+    SearchTypePlugin_create_sample;
     plugin->destroySampleFnc =
     (PRESTypePluginDestroySampleFunction)
-    TypeSearchPlugin_destroy_sample;
+    SearchTypePlugin_destroy_sample;
 
     plugin->serializeFnc =
     (PRESTypePluginSerializeFunction)
-    TypeSearchPlugin_serialize;
+    SearchTypePlugin_serialize;
     plugin->deserializeFnc =
     (PRESTypePluginDeserializeFunction)
-    TypeSearchPlugin_deserialize;
+    SearchTypePlugin_deserialize;
     plugin->getSerializedSampleMaxSizeFnc =
     (PRESTypePluginGetSerializedSampleMaxSizeFunction)
-    TypeSearchPlugin_get_serialized_sample_max_size;
+    SearchTypePlugin_get_serialized_sample_max_size;
     plugin->getSerializedSampleMinSizeFnc =
     (PRESTypePluginGetSerializedSampleMinSizeFunction)
-    TypeSearchPlugin_get_serialized_sample_min_size;
+    SearchTypePlugin_get_serialized_sample_min_size;
 
     plugin->getSampleFnc =
     (PRESTypePluginGetSampleFunction)
-    TypeSearchPlugin_get_sample;
+    SearchTypePlugin_get_sample;
     plugin->returnSampleFnc =
     (PRESTypePluginReturnSampleFunction)
-    TypeSearchPlugin_return_sample;
+    SearchTypePlugin_return_sample;
 
     plugin->getKeyKindFnc =
     (PRESTypePluginGetKeyKindFunction)
-    TypeSearchPlugin_get_key_kind;
+    SearchTypePlugin_get_key_kind;
 
     /* These functions are only used for keyed types. As this is not a keyed
     type they are all set to NULL
@@ -1757,46 +1757,46 @@ struct PRESTypePlugin *TypeSearchPlugin_new(void)
     plugin->serializedSampleToKeyHashFnc = NULL;
     plugin->serializedKeyToKeyHashFnc = NULL;    
     plugin->typeCode = (struct RTICdrTypeCode *) 
-    &rti::topic::dynamic_type<TypeSearch>::get().native();
+    &rti::topic::dynamic_type<SearchType>::get().native();
 
     plugin->languageKind = PRES_TYPEPLUGIN_CPPSTL_LANG;
 
     /* Serialized buffer */
     plugin->getBuffer = 
     (PRESTypePluginGetBufferFunction)
-    TypeSearchPlugin_get_buffer;
+    SearchTypePlugin_get_buffer;
     plugin->returnBuffer = 
     (PRESTypePluginReturnBufferFunction)
-    TypeSearchPlugin_return_buffer;
+    SearchTypePlugin_return_buffer;
     plugin->getSerializedSampleSizeFnc =
     (PRESTypePluginGetSerializedSampleSizeFunction)
-    TypeSearchPlugin_get_serialized_sample_size;
+    SearchTypePlugin_get_serialized_sample_size;
 
-    static const char * TYPE_NAME = "TypeSearch";
+    static const char * TYPE_NAME = "SearchType";
     plugin->endpointTypeName = TYPE_NAME;
 
     return plugin;
 }
 
 void
-TypeSearchPlugin_delete(struct PRESTypePlugin *plugin)
+SearchTypePlugin_delete(struct PRESTypePlugin *plugin)
 {
     RTIOsapiHeap_freeStructure(plugin);
 } 
 
 /* ----------------------------------------------------------------------------
-*  Type TypeTrack
+*  Type TrackType
 * -------------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------------
 Support functions:
 * -------------------------------------------------------------------------- */
 
-TypeTrack *
-TypeTrackPluginSupport_create_data(void)
+TrackType *
+TrackTypePluginSupport_create_data(void)
 {
     try {
-        TypeTrack *sample = new TypeTrack;    
+        TrackType *sample = new TrackType;    
         rti::topic::allocate_sample(*sample);
         return sample;
     } catch (...) {
@@ -1805,16 +1805,16 @@ TypeTrackPluginSupport_create_data(void)
 }
 
 void 
-TypeTrackPluginSupport_destroy_data(
-    TypeTrack *sample) 
+TrackTypePluginSupport_destroy_data(
+    TrackType *sample) 
 {
     delete sample;
 }
 
 RTIBool 
-TypeTrackPluginSupport_copy_data(
-    TypeTrack *dst,
-    const TypeTrack *src)
+TrackTypePluginSupport_copy_data(
+    TrackType *dst,
+    const TrackType *src)
 {
     try {
         *dst = *src;
@@ -1830,7 +1830,7 @@ Callback functions:
 * ---------------------------------------------------------------------------- */
 
 PRESTypePluginParticipantData 
-TypeTrackPlugin_on_participant_attached(
+TrackTypePlugin_on_participant_attached(
     void *registration_data,
     const struct PRESTypePluginParticipantInfo *participant_info,
     RTIBool top_level_registration,
@@ -1848,7 +1848,7 @@ TypeTrackPlugin_on_participant_attached(
 }
 
 void 
-TypeTrackPlugin_on_participant_detached(
+TrackTypePlugin_on_participant_detached(
     PRESTypePluginParticipantData participant_data)
 {
 
@@ -1856,7 +1856,7 @@ TypeTrackPlugin_on_participant_detached(
 }
 
 PRESTypePluginEndpointData
-TypeTrackPlugin_on_endpoint_attached(
+TrackTypePlugin_on_endpoint_attached(
     PRESTypePluginParticipantData participant_data,
     const struct PRESTypePluginEndpointInfo *endpoint_info,
     RTIBool top_level_registration, 
@@ -1874,9 +1874,9 @@ TypeTrackPlugin_on_endpoint_attached(
             participant_data,
             endpoint_info,
             (PRESTypePluginDefaultEndpointDataCreateSampleFunction)
-            TypeTrackPluginSupport_create_data,
+            TrackTypePluginSupport_create_data,
             (PRESTypePluginDefaultEndpointDataDestroySampleFunction)
-            TypeTrackPluginSupport_destroy_data,
+            TrackTypePluginSupport_destroy_data,
             NULL , NULL );
 
         if (epd == NULL) {
@@ -1884,7 +1884,7 @@ TypeTrackPlugin_on_endpoint_attached(
         } 
 
         if (endpoint_info->endpointKind == PRES_TYPEPLUGIN_ENDPOINT_WRITER) {
-            serializedSampleMaxSize = TypeTrackPlugin_get_serialized_sample_max_size(
+            serializedSampleMaxSize = TrackTypePlugin_get_serialized_sample_max_size(
                 epd,RTI_FALSE,RTI_CDR_ENCAPSULATION_ID_CDR_BE,0);
 
             PRESTypePluginDefaultEndpointData_setMaxSizeSerializedSample(epd, serializedSampleMaxSize);
@@ -1893,9 +1893,9 @@ TypeTrackPlugin_on_endpoint_attached(
                 epd,
                 endpoint_info,
                 (PRESTypePluginGetSerializedSampleMaxSizeFunction)
-                TypeTrackPlugin_get_serialized_sample_max_size, epd,
+                TrackTypePlugin_get_serialized_sample_max_size, epd,
                 (PRESTypePluginGetSerializedSampleSizeFunction)
-                TypeTrackPlugin_get_serialized_sample_size,
+                TrackTypePlugin_get_serialized_sample_size,
                 epd) == RTI_FALSE) {
                 PRESTypePluginDefaultEndpointData_delete(epd);
                 return NULL;
@@ -1909,7 +1909,7 @@ TypeTrackPlugin_on_endpoint_attached(
 }
 
 void 
-TypeTrackPlugin_on_endpoint_detached(
+TrackTypePlugin_on_endpoint_detached(
     PRESTypePluginEndpointData endpoint_data)
 {  
 
@@ -1917,16 +1917,16 @@ TypeTrackPlugin_on_endpoint_detached(
 }
 
 void    
-TypeTrackPlugin_return_sample(
+TrackTypePlugin_return_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample,
+    TrackType *sample,
     void *handle)
 {
     try {
         rti::topic::reset_sample(*sample);
     } catch(const std::exception& ex) {
         RTICdrLog_exception(
-            "TypeTrackPlugin_return_sample",
+            "TrackTypePlugin_return_sample",
             &RTI_LOG_ANY_FAILURE_s,
             "exception: ",
             ex.what());           
@@ -1937,28 +1937,28 @@ TypeTrackPlugin_return_sample(
 }
 
 RTIBool 
-TypeTrackPlugin_copy_sample(
+TrackTypePlugin_copy_sample(
     PRESTypePluginEndpointData,
-    TypeTrack *dst,
-    const TypeTrack *src)
+    TrackType *dst,
+    const TrackType *src)
 {
-    return TypeTrackPluginSupport_copy_data(dst,src);
+    return TrackTypePluginSupport_copy_data(dst,src);
 }
 
 /* ----------------------------------------------------------------------------
 (De)Serialize functions:
 * ------------------------------------------------------------------------- */
 unsigned int 
-TypeTrackPlugin_get_serialized_sample_max_size(
+TrackTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 RTIBool 
-TypeTrackPlugin_serialize(
+TrackTypePlugin_serialize(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeTrack *sample, 
+    const TrackType *sample, 
     struct RTICdrStream *stream,    
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -2011,9 +2011,9 @@ TypeTrackPlugin_serialize(
 }
 
 RTIBool 
-TypeTrackPlugin_deserialize_sample(
+TrackTypePlugin_deserialize_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample,
+    TrackType *sample,
     struct RTICdrStream *stream,   
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_sample, 
@@ -2065,10 +2065,10 @@ TypeTrackPlugin_deserialize_sample(
 }
 
 RTIBool
-TypeTrackPlugin_serialize_to_cdr_buffer(
+TrackTypePlugin_serialize_to_cdr_buffer(
     char * buffer,
     unsigned int * length,
-    const TypeTrack *sample)
+    const TrackType *sample)
 {
     try{
         struct RTICdrStream stream;
@@ -2080,12 +2080,12 @@ TypeTrackPlugin_serialize_to_cdr_buffer(
         }
 
         epd._maxSizeSerializedSample =
-        TypeTrackPlugin_get_serialized_sample_max_size(
+        TrackTypePlugin_get_serialized_sample_max_size(
             NULL, RTI_TRUE, RTICdrEncapsulation_getNativeCdrEncapsulationId(), 0);
 
         if (buffer == NULL) {
             *length = 
-            TypeTrackPlugin_get_serialized_sample_size(
+            TrackTypePlugin_get_serialized_sample_size(
                 (PRESTypePluginEndpointData)&epd,
                 RTI_TRUE,
                 RTICdrEncapsulation_getNativeCdrEncapsulationId(),
@@ -2102,7 +2102,7 @@ TypeTrackPlugin_serialize_to_cdr_buffer(
         RTICdrStream_init(&stream);
         RTICdrStream_set(&stream, (char *)buffer, *length);
 
-        result = TypeTrackPlugin_serialize(
+        result = TrackTypePlugin_serialize(
             (PRESTypePluginEndpointData)&epd, sample, &stream, 
             RTI_TRUE, RTICdrEncapsulation_getNativeCdrEncapsulationId(), 
             RTI_TRUE, NULL);  
@@ -2115,8 +2115,8 @@ TypeTrackPlugin_serialize_to_cdr_buffer(
 }
 
 RTIBool
-TypeTrackPlugin_deserialize_from_cdr_buffer(
-    TypeTrack *sample,
+TrackTypePlugin_deserialize_from_cdr_buffer(
+    TrackType *sample,
     const char * buffer,
     unsigned int length)
 {
@@ -2126,16 +2126,16 @@ TypeTrackPlugin_deserialize_from_cdr_buffer(
     RTICdrStream_set(&stream, (char *)buffer, length);
 
     rti::topic::reset_sample(*sample);
-    return TypeTrackPlugin_deserialize_sample( 
+    return TrackTypePlugin_deserialize_sample( 
         NULL, sample,
         &stream, RTI_TRUE, RTI_TRUE, 
         NULL);
 }
 
 RTIBool 
-TypeTrackPlugin_deserialize(
+TrackTypePlugin_deserialize(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack **sample,
+    TrackType **sample,
     RTIBool * drop_sample,
     struct RTICdrStream *stream,   
     RTIBool deserialize_encapsulation,
@@ -2144,11 +2144,11 @@ TypeTrackPlugin_deserialize(
 {
     try {
         RTIBool result;
-        const char *METHOD_NAME = "TypeTrackPlugin_deserialize";
+        const char *METHOD_NAME = "TrackTypePlugin_deserialize";
         if (drop_sample) {} /* To avoid warnings */
 
         stream->_xTypesState.unassignable = RTI_FALSE;
-        result= TypeTrackPlugin_deserialize_sample( 
+        result= TrackTypePlugin_deserialize_sample( 
             endpoint_data, (sample != NULL)?*sample:NULL,
             stream, deserialize_encapsulation, deserialize_sample, 
             endpoint_plugin_qos);
@@ -2162,7 +2162,7 @@ TypeTrackPlugin_deserialize(
             RTICdrLog_exception(
                 METHOD_NAME, 
                 &RTI_CDR_LOG_UNASSIGNABLE_SAMPLE_OF_TYPE_s, 
-                "TypeTrack");
+                "TrackType");
 
         }
 
@@ -2173,7 +2173,7 @@ TypeTrackPlugin_deserialize(
     }
 }
 
-RTIBool TypeTrackPlugin_skip(
+RTIBool TrackTypePlugin_skip(
     PRESTypePluginEndpointData endpoint_data,
     struct RTICdrStream *stream,   
     RTIBool skip_encapsulation,
@@ -2228,7 +2228,7 @@ catch (...) {
 }
 
 unsigned int 
-TypeTrackPlugin_get_serialized_sample_max_size_ex(
+TrackTypePlugin_get_serialized_sample_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -2264,7 +2264,7 @@ TypeTrackPlugin_get_serialized_sample_max_size_ex(
 }
 
 unsigned int 
-TypeTrackPlugin_get_serialized_sample_max_size(
+TrackTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -2274,7 +2274,7 @@ TypeTrackPlugin_get_serialized_sample_max_size(
         unsigned int size;
         RTIBool overflow = RTI_FALSE;
 
-        size = TypeTrackPlugin_get_serialized_sample_max_size_ex(
+        size = TrackTypePlugin_get_serialized_sample_max_size_ex(
             endpoint_data,&overflow,include_encapsulation,encapsulation_id,current_alignment);
 
         if (overflow) {
@@ -2288,7 +2288,7 @@ TypeTrackPlugin_get_serialized_sample_max_size(
 }
 
 unsigned int 
-TypeTrackPlugin_get_serialized_sample_min_size(
+TrackTypePlugin_get_serialized_sample_min_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -2334,12 +2334,12 @@ TypeTrackPlugin_get_serialized_sample_min_size(
 * encapsulation flags.
 */
 unsigned int
-TypeTrackPlugin_get_serialized_sample_size(
+TrackTypePlugin_get_serialized_sample_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment,
-    const TypeTrack * sample) 
+    const TrackType * sample) 
 {
     try {  
         unsigned int initial_alignment = current_alignment;
@@ -2393,15 +2393,15 @@ Key Management functions:
 * -------------------------------------------------------------------------------------- */
 
 PRESTypePluginKeyKind 
-TypeTrackPlugin_get_key_kind(void)
+TrackTypePlugin_get_key_kind(void)
 {
     return PRES_TYPEPLUGIN_NO_KEY;
 }
 
 RTIBool 
-TypeTrackPlugin_serialize_key(
+TrackTypePlugin_serialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeTrack *sample, 
+    const TrackType *sample, 
     struct RTICdrStream *stream,    
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -2421,7 +2421,7 @@ TypeTrackPlugin_serialize_key(
 
         if(serialize_key) {
 
-            if (!TypeTrackPlugin_serialize(
+            if (!TrackTypePlugin_serialize(
                 endpoint_data,
                 sample,
                 stream,
@@ -2443,9 +2443,9 @@ TypeTrackPlugin_serialize_key(
     }
 }
 
-RTIBool TypeTrackPlugin_deserialize_key_sample(
+RTIBool TrackTypePlugin_deserialize_key_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample, 
+    TrackType *sample, 
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_key,
@@ -2467,7 +2467,7 @@ RTIBool TypeTrackPlugin_deserialize_key_sample(
         }
         if (deserialize_key) {
 
-            if (!TypeTrackPlugin_deserialize_sample(
+            if (!TrackTypePlugin_deserialize_sample(
                 endpoint_data, sample, stream, 
                 RTI_FALSE, RTI_TRUE, 
                 endpoint_plugin_qos)) {
@@ -2485,9 +2485,9 @@ RTIBool TypeTrackPlugin_deserialize_key_sample(
     }
 }
 
-RTIBool TypeTrackPlugin_deserialize_key(
+RTIBool TrackTypePlugin_deserialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack **sample, 
+    TrackType **sample, 
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -2498,7 +2498,7 @@ RTIBool TypeTrackPlugin_deserialize_key(
         RTIBool result;
         if (drop_sample) {} /* To avoid warnings */
         stream->_xTypesState.unassignable = RTI_FALSE;
-        result= TypeTrackPlugin_deserialize_key_sample(
+        result= TrackTypePlugin_deserialize_key_sample(
             endpoint_data, (sample != NULL)?*sample:NULL, stream,
             deserialize_encapsulation, deserialize_key, endpoint_plugin_qos);
         if (result) {
@@ -2514,7 +2514,7 @@ RTIBool TypeTrackPlugin_deserialize_key(
 }
 
 unsigned int
-TypeTrackPlugin_get_serialized_key_max_size_ex(
+TrackTypePlugin_get_serialized_key_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -2540,7 +2540,7 @@ TypeTrackPlugin_get_serialized_key_max_size_ex(
         initial_alignment = 0;
     }
 
-    current_alignment += TypeTrackPlugin_get_serialized_sample_max_size_ex(
+    current_alignment += TrackTypePlugin_get_serialized_sample_max_size_ex(
         endpoint_data, overflow,RTI_FALSE, encapsulation_id, current_alignment);
 
     if (include_encapsulation) {
@@ -2550,7 +2550,7 @@ TypeTrackPlugin_get_serialized_key_max_size_ex(
 }
 
 unsigned int
-TypeTrackPlugin_get_serialized_key_max_size(
+TrackTypePlugin_get_serialized_key_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -2560,7 +2560,7 @@ TypeTrackPlugin_get_serialized_key_max_size(
         unsigned int size;
         RTIBool overflow = RTI_FALSE;
 
-        size = TypeTrackPlugin_get_serialized_key_max_size_ex(
+        size = TrackTypePlugin_get_serialized_key_max_size_ex(
             endpoint_data,&overflow,include_encapsulation,encapsulation_id,current_alignment);
 
         if (overflow) {
@@ -2574,9 +2574,9 @@ TypeTrackPlugin_get_serialized_key_max_size(
 }
 
 RTIBool 
-TypeTrackPlugin_serialized_sample_to_key(
+TrackTypePlugin_serialized_sample_to_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample,
+    TrackType *sample,
     struct RTICdrStream *stream, 
     RTIBool deserialize_encapsulation,  
     RTIBool deserialize_key, 
@@ -2601,7 +2601,7 @@ TypeTrackPlugin_serialized_sample_to_key(
 
     if (deserialize_key) {
 
-        if (!TypeTrackPlugin_deserialize_sample(
+        if (!TrackTypePlugin_deserialize_sample(
             endpoint_data, sample, stream, RTI_FALSE, 
             RTI_TRUE, endpoint_plugin_qos)) {
             return RTI_FALSE;
@@ -2633,7 +2633,7 @@ TypeTrackPlugin_serialized_sample_to_key(
 /* ------------------------------------------------------------------------
 * Plug-in Installation Methods
 * ------------------------------------------------------------------------ */
-struct PRESTypePlugin *TypeTrackPlugin_new(void) 
+struct PRESTypePlugin *TrackTypePlugin_new(void) 
 { 
     struct PRESTypePlugin *plugin = NULL;
     const struct PRESTypePluginVersion PLUGIN_VERSION = 
@@ -2650,50 +2650,50 @@ struct PRESTypePlugin *TypeTrackPlugin_new(void)
     /* set up parent's function pointers */
     plugin->onParticipantAttached =
     (PRESTypePluginOnParticipantAttachedCallback)
-    TypeTrackPlugin_on_participant_attached;
+    TrackTypePlugin_on_participant_attached;
     plugin->onParticipantDetached =
     (PRESTypePluginOnParticipantDetachedCallback)
-    TypeTrackPlugin_on_participant_detached;
+    TrackTypePlugin_on_participant_detached;
     plugin->onEndpointAttached =
     (PRESTypePluginOnEndpointAttachedCallback)
-    TypeTrackPlugin_on_endpoint_attached;
+    TrackTypePlugin_on_endpoint_attached;
     plugin->onEndpointDetached =
     (PRESTypePluginOnEndpointDetachedCallback)
-    TypeTrackPlugin_on_endpoint_detached;
+    TrackTypePlugin_on_endpoint_detached;
 
     plugin->copySampleFnc =
     (PRESTypePluginCopySampleFunction)
-    TypeTrackPlugin_copy_sample;
+    TrackTypePlugin_copy_sample;
     plugin->createSampleFnc =
     (PRESTypePluginCreateSampleFunction)
-    TypeTrackPlugin_create_sample;
+    TrackTypePlugin_create_sample;
     plugin->destroySampleFnc =
     (PRESTypePluginDestroySampleFunction)
-    TypeTrackPlugin_destroy_sample;
+    TrackTypePlugin_destroy_sample;
 
     plugin->serializeFnc =
     (PRESTypePluginSerializeFunction)
-    TypeTrackPlugin_serialize;
+    TrackTypePlugin_serialize;
     plugin->deserializeFnc =
     (PRESTypePluginDeserializeFunction)
-    TypeTrackPlugin_deserialize;
+    TrackTypePlugin_deserialize;
     plugin->getSerializedSampleMaxSizeFnc =
     (PRESTypePluginGetSerializedSampleMaxSizeFunction)
-    TypeTrackPlugin_get_serialized_sample_max_size;
+    TrackTypePlugin_get_serialized_sample_max_size;
     plugin->getSerializedSampleMinSizeFnc =
     (PRESTypePluginGetSerializedSampleMinSizeFunction)
-    TypeTrackPlugin_get_serialized_sample_min_size;
+    TrackTypePlugin_get_serialized_sample_min_size;
 
     plugin->getSampleFnc =
     (PRESTypePluginGetSampleFunction)
-    TypeTrackPlugin_get_sample;
+    TrackTypePlugin_get_sample;
     plugin->returnSampleFnc =
     (PRESTypePluginReturnSampleFunction)
-    TypeTrackPlugin_return_sample;
+    TrackTypePlugin_return_sample;
 
     plugin->getKeyKindFnc =
     (PRESTypePluginGetKeyKindFunction)
-    TypeTrackPlugin_get_key_kind;
+    TrackTypePlugin_get_key_kind;
 
     /* These functions are only used for keyed types. As this is not a keyed
     type they are all set to NULL
@@ -2709,29 +2709,29 @@ struct PRESTypePlugin *TypeTrackPlugin_new(void)
     plugin->serializedSampleToKeyHashFnc = NULL;
     plugin->serializedKeyToKeyHashFnc = NULL;    
     plugin->typeCode = (struct RTICdrTypeCode *) 
-    &rti::topic::dynamic_type<TypeTrack>::get().native();
+    &rti::topic::dynamic_type<TrackType>::get().native();
 
     plugin->languageKind = PRES_TYPEPLUGIN_CPPSTL_LANG;
 
     /* Serialized buffer */
     plugin->getBuffer = 
     (PRESTypePluginGetBufferFunction)
-    TypeTrackPlugin_get_buffer;
+    TrackTypePlugin_get_buffer;
     plugin->returnBuffer = 
     (PRESTypePluginReturnBufferFunction)
-    TypeTrackPlugin_return_buffer;
+    TrackTypePlugin_return_buffer;
     plugin->getSerializedSampleSizeFnc =
     (PRESTypePluginGetSerializedSampleSizeFunction)
-    TypeTrackPlugin_get_serialized_sample_size;
+    TrackTypePlugin_get_serialized_sample_size;
 
-    static const char * TYPE_NAME = "TypeTrack";
+    static const char * TYPE_NAME = "TrackType";
     plugin->endpointTypeName = TYPE_NAME;
 
     return plugin;
 }
 
 void
-TypeTrackPlugin_delete(struct PRESTypePlugin *plugin)
+TrackTypePlugin_delete(struct PRESTypePlugin *plugin)
 {
     RTIOsapiHeap_freeStructure(plugin);
 } 
@@ -2949,7 +2949,7 @@ radarUnionPlugin_serialize(
                 case (Options::SEARCH):
                     {  
 
-                        if(!TypeSearchPlugin_serialize(
+                        if(!SearchTypePlugin_serialize(
                             endpoint_data,
                             &sample->searchInfo(),
                             stream,
@@ -2963,7 +2963,7 @@ radarUnionPlugin_serialize(
                 case (Options::TRACK):
                     {  
 
-                        if(!TypeTrackPlugin_serialize(
+                        if(!TrackTypePlugin_serialize(
                             endpoint_data,
                             &sample->trackInfo(),
                             stream,
@@ -3023,7 +3023,7 @@ radarUnionPlugin_deserialize_sample(
         switch(rti::topic::cdr::integer_case(sample->_d())) {
             case (Options::SEARCH):
                 {  
-                    if(!TypeSearchPlugin_deserialize_sample(
+                    if(!SearchTypePlugin_deserialize_sample(
                         endpoint_data,
                         &sample->searchInfo(),
                         stream,
@@ -3034,7 +3034,7 @@ radarUnionPlugin_deserialize_sample(
             } break ;
             case (Options::TRACK):
                 {  
-                    if(!TypeTrackPlugin_deserialize_sample(
+                    if(!TrackTypePlugin_deserialize_sample(
                         endpoint_data,
                         &sample->trackInfo(),
                         stream,
@@ -3200,7 +3200,7 @@ RTIBool radarUnionPlugin_skip(
 
             case (Options::SEARCH):
                 {  
-                    if (!TypeSearchPlugin_skip(
+                    if (!SearchTypePlugin_skip(
                         endpoint_data,
                         stream, 
                         RTI_FALSE, RTI_TRUE, 
@@ -3210,7 +3210,7 @@ RTIBool radarUnionPlugin_skip(
             } break ;
             case (Options::TRACK):
                 {  
-                    if (!TypeTrackPlugin_skip(
+                    if (!TrackTypePlugin_skip(
                         endpoint_data,
                         stream, 
                         RTI_FALSE, RTI_TRUE, 
@@ -3264,10 +3264,10 @@ radarUnionPlugin_get_serialized_sample_max_size_ex(
         endpoint_data, overflow, RTI_FALSE,encapsulation_id,current_alignment);
 
     union_max_size_serialized = RTIOsapiUtility_max( 
-        (unsigned int) TypeSearchPlugin_get_serialized_sample_max_size_ex(
+        (unsigned int) SearchTypePlugin_get_serialized_sample_max_size_ex(
             endpoint_data, overflow, RTI_FALSE,encapsulation_id,current_alignment),      union_max_size_serialized);
     union_max_size_serialized = RTIOsapiUtility_max( 
-        (unsigned int) TypeTrackPlugin_get_serialized_sample_max_size_ex(
+        (unsigned int) TrackTypePlugin_get_serialized_sample_max_size_ex(
             endpoint_data, overflow, RTI_FALSE,encapsulation_id,current_alignment),      union_max_size_serialized);
 
     if (include_encapsulation) {
@@ -3330,11 +3330,11 @@ radarUnionPlugin_get_serialized_sample_min_size(
         current_alignment +=OptionsPlugin_get_serialized_sample_min_size(
             endpoint_data,RTI_FALSE,encapsulation_id,current_alignment);
         union_min_size_serialized = RTIOsapiUtility_min( 
-            (unsigned int) TypeSearchPlugin_get_serialized_sample_min_size(
+            (unsigned int) SearchTypePlugin_get_serialized_sample_min_size(
                 endpoint_data,RTI_FALSE,encapsulation_id,current_alignment), 
                 union_min_size_serialized);
         union_min_size_serialized = RTIOsapiUtility_min( 
-            (unsigned int) TypeTrackPlugin_get_serialized_sample_min_size(
+            (unsigned int) TrackTypePlugin_get_serialized_sample_min_size(
                 endpoint_data,RTI_FALSE,encapsulation_id,current_alignment), 
                 union_min_size_serialized);
 
@@ -3398,14 +3398,14 @@ radarUnionPlugin_get_serialized_sample_size(
             case (Options::SEARCH):
                 {  
 
-                    current_alignment += TypeSearchPlugin_get_serialized_sample_size(
+                    current_alignment += SearchTypePlugin_get_serialized_sample_size(
                         endpoint_data,RTI_FALSE, encapsulation_id,
                         current_alignment, &sample->searchInfo());
             }break ;
             case (Options::TRACK):
                 {  
 
-                    current_alignment += TypeTrackPlugin_get_serialized_sample_size(
+                    current_alignment += TrackTypePlugin_get_serialized_sample_size(
                         endpoint_data,RTI_FALSE, encapsulation_id,
                         current_alignment, &sample->trackInfo());
             }break ;
@@ -3948,6 +3948,26 @@ TimeStampStructPlugin_serialize(
         if(serialize_sample) {
 
             if (!rti::topic::cdr::serialize(
+                stream, &sample->milisec())) {
+                return RTI_FALSE;
+            }
+
+            if (!rti::topic::cdr::serialize(
+                stream, &sample->sec())) {
+                return RTI_FALSE;
+            }
+
+            if (!rti::topic::cdr::serialize(
+                stream, &sample->minutes())) {
+                return RTI_FALSE;
+            }
+
+            if (!rti::topic::cdr::serialize(
+                stream, &sample->hour())) {
+                return RTI_FALSE;
+            }
+
+            if (!rti::topic::cdr::serialize(
                 stream, &sample->day())) {
                 return RTI_FALSE;
             }
@@ -4000,6 +4020,26 @@ TimeStampStructPlugin_deserialize_sample(
     }
     if(deserialize_sample) {
 
+        if (!rti::topic::cdr::deserialize(
+            stream, 
+            &sample->milisec())) {
+            goto fin; 
+        }
+        if (!rti::topic::cdr::deserialize(
+            stream, 
+            &sample->sec())) {
+            goto fin; 
+        }
+        if (!rti::topic::cdr::deserialize(
+            stream, 
+            &sample->minutes())) {
+            goto fin; 
+        }
+        if (!rti::topic::cdr::deserialize(
+            stream, 
+            &sample->hour())) {
+            goto fin; 
+        }
         if (!rti::topic::cdr::deserialize(
             stream, 
             &sample->day())) {
@@ -4174,6 +4214,18 @@ RTIBool TimeStampStructPlugin_skip(
         if (!RTICdrStream_skipShort (stream)) {
             goto fin; 
         }
+        if (!RTICdrStream_skipShort (stream)) {
+            goto fin; 
+        }
+        if (!RTICdrStream_skipShort (stream)) {
+            goto fin; 
+        }
+        if (!RTICdrStream_skipShort (stream)) {
+            goto fin; 
+        }
+        if (!RTICdrStream_skipShort (stream)) {
+            goto fin; 
+        }
     }
 
     done = RTI_TRUE;
@@ -4219,6 +4271,18 @@ TimeStampStructPlugin_get_serialized_sample_max_size_ex(
         current_alignment = 0;
         initial_alignment = 0;
     }
+
+    current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+        current_alignment);
+
+    current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+        current_alignment);
+
+    current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+        current_alignment);
+
+    current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+        current_alignment);
 
     current_alignment +=RTICdrType_getShortMaxSizeSerialized(
         current_alignment);
@@ -4291,6 +4355,14 @@ TimeStampStructPlugin_get_serialized_sample_min_size(
             current_alignment);
         current_alignment +=RTICdrType_getShortMaxSizeSerialized(
             current_alignment);
+        current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+            current_alignment);
+        current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+            current_alignment);
+        current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+            current_alignment);
+        current_alignment +=RTICdrType_getShortMaxSizeSerialized(
+            current_alignment);
 
         if (include_encapsulation) {
             current_alignment += encapsulation_size;
@@ -4344,6 +4416,22 @@ TimeStampStructPlugin_get_serialized_sample_size(
                 endpoint_data,
                 current_alignment);
         }
+
+        current_alignment += RTICdrType_getShortMaxSizeSerialized(
+            PRESTypePluginDefaultEndpointData_getAlignment(
+                endpoint_data, current_alignment));
+
+        current_alignment += RTICdrType_getShortMaxSizeSerialized(
+            PRESTypePluginDefaultEndpointData_getAlignment(
+                endpoint_data, current_alignment));
+
+        current_alignment += RTICdrType_getShortMaxSizeSerialized(
+            PRESTypePluginDefaultEndpointData_getAlignment(
+                endpoint_data, current_alignment));
+
+        current_alignment += RTICdrType_getShortMaxSizeSerialized(
+            PRESTypePluginDefaultEndpointData_getAlignment(
+                endpoint_data, current_alignment));
 
         current_alignment += RTICdrType_getShortMaxSizeSerialized(
             PRESTypePluginDefaultEndpointData_getAlignment(

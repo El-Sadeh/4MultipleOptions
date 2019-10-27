@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the RTI Connext manual.
 */
 
-#ifndef MultipleOptionsPlugin_1810373351_h
-#define MultipleOptionsPlugin_1810373351_h
+#ifndef MultipleOptionsPlugin_1810373413_h
+#define MultipleOptionsPlugin_1810373413_h
 
 #include "MultipleOptions.hpp"
 
@@ -259,48 +259,48 @@ NDDSUSERDllExport extern void
 PriorityPluginSupport_print_data(
     const Priority *sample, const char *desc, int indent_level);
 
-#define TypeSearchPlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
-#define TypeSearchPlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
-#define TypeSearchPlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer 
+#define SearchTypePlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
+#define SearchTypePlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
+#define SearchTypePlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer 
 
-#define TypeSearchPlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
-#define TypeSearchPlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
+#define SearchTypePlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
+#define SearchTypePlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
 
 /* --------------------------------------------------------------------------------------
 Support functions:
 * -------------------------------------------------------------------------------------- */
 
-NDDSUSERDllExport extern TypeSearch*
-TypeSearchPluginSupport_create_data_w_params(
+NDDSUSERDllExport extern SearchType*
+SearchTypePluginSupport_create_data_w_params(
     const struct DDS_TypeAllocationParams_t * alloc_params);
 
-NDDSUSERDllExport extern TypeSearch*
-TypeSearchPluginSupport_create_data_ex(RTIBool allocate_pointers);
+NDDSUSERDllExport extern SearchType*
+SearchTypePluginSupport_create_data_ex(RTIBool allocate_pointers);
 
-NDDSUSERDllExport extern TypeSearch*
-TypeSearchPluginSupport_create_data(void);
+NDDSUSERDllExport extern SearchType*
+SearchTypePluginSupport_create_data(void);
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPluginSupport_copy_data(
-    TypeSearch *out,
-    const TypeSearch *in);
+SearchTypePluginSupport_copy_data(
+    SearchType *out,
+    const SearchType *in);
 
 NDDSUSERDllExport extern void 
-TypeSearchPluginSupport_destroy_data_w_params(
-    TypeSearch *sample,
+SearchTypePluginSupport_destroy_data_w_params(
+    SearchType *sample,
     const struct DDS_TypeDeallocationParams_t * dealloc_params);
 
 NDDSUSERDllExport extern void 
-TypeSearchPluginSupport_destroy_data_ex(
-    TypeSearch *sample,RTIBool deallocate_pointers);
+SearchTypePluginSupport_destroy_data_ex(
+    SearchType *sample,RTIBool deallocate_pointers);
 
 NDDSUSERDllExport extern void 
-TypeSearchPluginSupport_destroy_data(
-    TypeSearch *sample);
+SearchTypePluginSupport_destroy_data(
+    SearchType *sample);
 
 NDDSUSERDllExport extern void 
-TypeSearchPluginSupport_print_data(
-    const TypeSearch *sample,
+SearchTypePluginSupport_print_data(
+    const SearchType *sample,
     const char *desc,
     unsigned int indent);
 
@@ -309,7 +309,7 @@ Callback functions:
 * ---------------------------------------------------------------------------- */
 
 NDDSUSERDllExport extern PRESTypePluginParticipantData 
-TypeSearchPlugin_on_participant_attached(
+SearchTypePlugin_on_participant_attached(
     void *registration_data, 
     const struct PRESTypePluginParticipantInfo *participant_info,
     RTIBool top_level_registration, 
@@ -317,40 +317,40 @@ TypeSearchPlugin_on_participant_attached(
     RTICdrTypeCode *typeCode);
 
 NDDSUSERDllExport extern void 
-TypeSearchPlugin_on_participant_detached(
+SearchTypePlugin_on_participant_detached(
     PRESTypePluginParticipantData participant_data);
 
 NDDSUSERDllExport extern PRESTypePluginEndpointData 
-TypeSearchPlugin_on_endpoint_attached(
+SearchTypePlugin_on_endpoint_attached(
     PRESTypePluginParticipantData participant_data,
     const struct PRESTypePluginEndpointInfo *endpoint_info,
     RTIBool top_level_registration, 
     void *container_plugin_context);
 
 NDDSUSERDllExport extern void 
-TypeSearchPlugin_on_endpoint_detached(
+SearchTypePlugin_on_endpoint_detached(
     PRESTypePluginEndpointData endpoint_data);
 
 NDDSUSERDllExport extern void    
-TypeSearchPlugin_return_sample(
+SearchTypePlugin_return_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample,
+    SearchType *sample,
     void *handle);    
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_copy_sample(
+SearchTypePlugin_copy_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *out,
-    const TypeSearch *in);
+    SearchType *out,
+    const SearchType *in);
 
 /* ----------------------------------------------------------------------------
 (De)Serialize functions:
 * ------------------------------------------------------------------------- */
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_serialize(
+SearchTypePlugin_serialize(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeSearch *sample,
+    const SearchType *sample,
     struct RTICdrStream *stream, 
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -358,24 +358,24 @@ TypeSearchPlugin_serialize(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_deserialize_sample(
+SearchTypePlugin_deserialize_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample, 
+    SearchType *sample, 
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_sample, 
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeSearchPlugin_serialize_to_cdr_buffer(
+SearchTypePlugin_serialize_to_cdr_buffer(
     char * buffer,
     unsigned int * length,
-    const TypeSearch *sample); 
+    const SearchType *sample); 
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_deserialize(
+SearchTypePlugin_deserialize(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch **sample, 
+    SearchType **sample, 
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -383,13 +383,13 @@ TypeSearchPlugin_deserialize(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeSearchPlugin_deserialize_from_cdr_buffer(
-    TypeSearch *sample,
+SearchTypePlugin_deserialize_from_cdr_buffer(
+    SearchType *sample,
     const char * buffer,
     unsigned int length);    
 
 NDDSUSERDllExport extern RTIBool
-TypeSearchPlugin_skip(
+SearchTypePlugin_skip(
     PRESTypePluginEndpointData endpoint_data,
     struct RTICdrStream *stream, 
     RTIBool skip_encapsulation,  
@@ -397,7 +397,7 @@ TypeSearchPlugin_skip(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern unsigned int 
-TypeSearchPlugin_get_serialized_sample_max_size_ex(
+SearchTypePlugin_get_serialized_sample_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -405,35 +405,35 @@ TypeSearchPlugin_get_serialized_sample_max_size_ex(
     unsigned int current_alignment);    
 
 NDDSUSERDllExport extern unsigned int 
-TypeSearchPlugin_get_serialized_sample_max_size(
+SearchTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int 
-TypeSearchPlugin_get_serialized_sample_min_size(
+SearchTypePlugin_get_serialized_sample_min_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int
-TypeSearchPlugin_get_serialized_sample_size(
+SearchTypePlugin_get_serialized_sample_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment,
-    const TypeSearch * sample);
+    const SearchType * sample);
 
 /* --------------------------------------------------------------------------------------
 Key Management functions:
 * -------------------------------------------------------------------------------------- */
 NDDSUSERDllExport extern PRESTypePluginKeyKind 
-TypeSearchPlugin_get_key_kind(void);
+SearchTypePlugin_get_key_kind(void);
 
 NDDSUSERDllExport extern unsigned int 
-TypeSearchPlugin_get_serialized_key_max_size_ex(
+SearchTypePlugin_get_serialized_key_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -441,16 +441,16 @@ TypeSearchPlugin_get_serialized_key_max_size_ex(
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int 
-TypeSearchPlugin_get_serialized_key_max_size(
+SearchTypePlugin_get_serialized_key_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_serialize_key(
+SearchTypePlugin_serialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeSearch *sample,
+    const SearchType *sample,
     struct RTICdrStream *stream,
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -458,18 +458,18 @@ TypeSearchPlugin_serialize_key(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_deserialize_key_sample(
+SearchTypePlugin_deserialize_key_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch * sample,
+    SearchType * sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_key,
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeSearchPlugin_deserialize_key(
+SearchTypePlugin_deserialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch ** sample,
+    SearchType ** sample,
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -477,9 +477,9 @@ TypeSearchPlugin_deserialize_key(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeSearchPlugin_serialized_sample_to_key(
+SearchTypePlugin_serialized_sample_to_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeSearch *sample,
+    SearchType *sample,
     struct RTICdrStream *stream, 
     RTIBool deserialize_encapsulation,  
     RTIBool deserialize_key, 
@@ -487,53 +487,53 @@ TypeSearchPlugin_serialized_sample_to_key(
 
 /* Plugin Functions */
 NDDSUSERDllExport extern struct PRESTypePlugin*
-TypeSearchPlugin_new(void);
+SearchTypePlugin_new(void);
 
 NDDSUSERDllExport extern void
-TypeSearchPlugin_delete(struct PRESTypePlugin *);
+SearchTypePlugin_delete(struct PRESTypePlugin *);
 
-#define TypeTrackPlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
-#define TypeTrackPlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
-#define TypeTrackPlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer 
+#define TrackTypePlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
+#define TrackTypePlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
+#define TrackTypePlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer 
 
-#define TypeTrackPlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
-#define TypeTrackPlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
+#define TrackTypePlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
+#define TrackTypePlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
 
 /* --------------------------------------------------------------------------------------
 Support functions:
 * -------------------------------------------------------------------------------------- */
 
-NDDSUSERDllExport extern TypeTrack*
-TypeTrackPluginSupport_create_data_w_params(
+NDDSUSERDllExport extern TrackType*
+TrackTypePluginSupport_create_data_w_params(
     const struct DDS_TypeAllocationParams_t * alloc_params);
 
-NDDSUSERDllExport extern TypeTrack*
-TypeTrackPluginSupport_create_data_ex(RTIBool allocate_pointers);
+NDDSUSERDllExport extern TrackType*
+TrackTypePluginSupport_create_data_ex(RTIBool allocate_pointers);
 
-NDDSUSERDllExport extern TypeTrack*
-TypeTrackPluginSupport_create_data(void);
+NDDSUSERDllExport extern TrackType*
+TrackTypePluginSupport_create_data(void);
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPluginSupport_copy_data(
-    TypeTrack *out,
-    const TypeTrack *in);
+TrackTypePluginSupport_copy_data(
+    TrackType *out,
+    const TrackType *in);
 
 NDDSUSERDllExport extern void 
-TypeTrackPluginSupport_destroy_data_w_params(
-    TypeTrack *sample,
+TrackTypePluginSupport_destroy_data_w_params(
+    TrackType *sample,
     const struct DDS_TypeDeallocationParams_t * dealloc_params);
 
 NDDSUSERDllExport extern void 
-TypeTrackPluginSupport_destroy_data_ex(
-    TypeTrack *sample,RTIBool deallocate_pointers);
+TrackTypePluginSupport_destroy_data_ex(
+    TrackType *sample,RTIBool deallocate_pointers);
 
 NDDSUSERDllExport extern void 
-TypeTrackPluginSupport_destroy_data(
-    TypeTrack *sample);
+TrackTypePluginSupport_destroy_data(
+    TrackType *sample);
 
 NDDSUSERDllExport extern void 
-TypeTrackPluginSupport_print_data(
-    const TypeTrack *sample,
+TrackTypePluginSupport_print_data(
+    const TrackType *sample,
     const char *desc,
     unsigned int indent);
 
@@ -542,7 +542,7 @@ Callback functions:
 * ---------------------------------------------------------------------------- */
 
 NDDSUSERDllExport extern PRESTypePluginParticipantData 
-TypeTrackPlugin_on_participant_attached(
+TrackTypePlugin_on_participant_attached(
     void *registration_data, 
     const struct PRESTypePluginParticipantInfo *participant_info,
     RTIBool top_level_registration, 
@@ -550,40 +550,40 @@ TypeTrackPlugin_on_participant_attached(
     RTICdrTypeCode *typeCode);
 
 NDDSUSERDllExport extern void 
-TypeTrackPlugin_on_participant_detached(
+TrackTypePlugin_on_participant_detached(
     PRESTypePluginParticipantData participant_data);
 
 NDDSUSERDllExport extern PRESTypePluginEndpointData 
-TypeTrackPlugin_on_endpoint_attached(
+TrackTypePlugin_on_endpoint_attached(
     PRESTypePluginParticipantData participant_data,
     const struct PRESTypePluginEndpointInfo *endpoint_info,
     RTIBool top_level_registration, 
     void *container_plugin_context);
 
 NDDSUSERDllExport extern void 
-TypeTrackPlugin_on_endpoint_detached(
+TrackTypePlugin_on_endpoint_detached(
     PRESTypePluginEndpointData endpoint_data);
 
 NDDSUSERDllExport extern void    
-TypeTrackPlugin_return_sample(
+TrackTypePlugin_return_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample,
+    TrackType *sample,
     void *handle);    
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_copy_sample(
+TrackTypePlugin_copy_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *out,
-    const TypeTrack *in);
+    TrackType *out,
+    const TrackType *in);
 
 /* ----------------------------------------------------------------------------
 (De)Serialize functions:
 * ------------------------------------------------------------------------- */
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_serialize(
+TrackTypePlugin_serialize(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeTrack *sample,
+    const TrackType *sample,
     struct RTICdrStream *stream, 
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -591,24 +591,24 @@ TypeTrackPlugin_serialize(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_deserialize_sample(
+TrackTypePlugin_deserialize_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample, 
+    TrackType *sample, 
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_sample, 
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeTrackPlugin_serialize_to_cdr_buffer(
+TrackTypePlugin_serialize_to_cdr_buffer(
     char * buffer,
     unsigned int * length,
-    const TypeTrack *sample); 
+    const TrackType *sample); 
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_deserialize(
+TrackTypePlugin_deserialize(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack **sample, 
+    TrackType **sample, 
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -616,13 +616,13 @@ TypeTrackPlugin_deserialize(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeTrackPlugin_deserialize_from_cdr_buffer(
-    TypeTrack *sample,
+TrackTypePlugin_deserialize_from_cdr_buffer(
+    TrackType *sample,
     const char * buffer,
     unsigned int length);    
 
 NDDSUSERDllExport extern RTIBool
-TypeTrackPlugin_skip(
+TrackTypePlugin_skip(
     PRESTypePluginEndpointData endpoint_data,
     struct RTICdrStream *stream, 
     RTIBool skip_encapsulation,  
@@ -630,7 +630,7 @@ TypeTrackPlugin_skip(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern unsigned int 
-TypeTrackPlugin_get_serialized_sample_max_size_ex(
+TrackTypePlugin_get_serialized_sample_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -638,35 +638,35 @@ TypeTrackPlugin_get_serialized_sample_max_size_ex(
     unsigned int current_alignment);    
 
 NDDSUSERDllExport extern unsigned int 
-TypeTrackPlugin_get_serialized_sample_max_size(
+TrackTypePlugin_get_serialized_sample_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int 
-TypeTrackPlugin_get_serialized_sample_min_size(
+TrackTypePlugin_get_serialized_sample_min_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int
-TypeTrackPlugin_get_serialized_sample_size(
+TrackTypePlugin_get_serialized_sample_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment,
-    const TypeTrack * sample);
+    const TrackType * sample);
 
 /* --------------------------------------------------------------------------------------
 Key Management functions:
 * -------------------------------------------------------------------------------------- */
 NDDSUSERDllExport extern PRESTypePluginKeyKind 
-TypeTrackPlugin_get_key_kind(void);
+TrackTypePlugin_get_key_kind(void);
 
 NDDSUSERDllExport extern unsigned int 
-TypeTrackPlugin_get_serialized_key_max_size_ex(
+TrackTypePlugin_get_serialized_key_max_size_ex(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool * overflow,
     RTIBool include_encapsulation,
@@ -674,16 +674,16 @@ TypeTrackPlugin_get_serialized_key_max_size_ex(
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern unsigned int 
-TypeTrackPlugin_get_serialized_key_max_size(
+TrackTypePlugin_get_serialized_key_max_size(
     PRESTypePluginEndpointData endpoint_data,
     RTIBool include_encapsulation,
     RTIEncapsulationId encapsulation_id,
     unsigned int current_alignment);
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_serialize_key(
+TrackTypePlugin_serialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    const TypeTrack *sample,
+    const TrackType *sample,
     struct RTICdrStream *stream,
     RTIBool serialize_encapsulation,
     RTIEncapsulationId encapsulation_id,
@@ -691,18 +691,18 @@ TypeTrackPlugin_serialize_key(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_deserialize_key_sample(
+TrackTypePlugin_deserialize_key_sample(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack * sample,
+    TrackType * sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
     RTIBool deserialize_key,
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool 
-TypeTrackPlugin_deserialize_key(
+TrackTypePlugin_deserialize_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack ** sample,
+    TrackType ** sample,
     RTIBool * drop_sample,
     struct RTICdrStream *stream,
     RTIBool deserialize_encapsulation,
@@ -710,9 +710,9 @@ TypeTrackPlugin_deserialize_key(
     void *endpoint_plugin_qos);
 
 NDDSUSERDllExport extern RTIBool
-TypeTrackPlugin_serialized_sample_to_key(
+TrackTypePlugin_serialized_sample_to_key(
     PRESTypePluginEndpointData endpoint_data,
-    TypeTrack *sample,
+    TrackType *sample,
     struct RTICdrStream *stream, 
     RTIBool deserialize_encapsulation,  
     RTIBool deserialize_key, 
@@ -720,10 +720,10 @@ TypeTrackPlugin_serialized_sample_to_key(
 
 /* Plugin Functions */
 NDDSUSERDllExport extern struct PRESTypePlugin*
-TypeTrackPlugin_new(void);
+TrackTypePlugin_new(void);
 
 NDDSUSERDllExport extern void
-TypeTrackPlugin_delete(struct PRESTypePlugin *);
+TrackTypePlugin_delete(struct PRESTypePlugin *);
 
 #define radarUnionPlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
 #define radarUnionPlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
@@ -1431,5 +1431,5 @@ RadarCommandPlugin_delete(struct PRESTypePlugin *);
 #define NDDSUSERDllExport
 #endif
 
-#endif /* MultipleOptionsPlugin_1810373351_h */
+#endif /* MultipleOptionsPlugin_1810373413_h */
 
